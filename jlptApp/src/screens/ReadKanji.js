@@ -20,7 +20,7 @@ export default function ReadKanji () {
 
     useEffect( () => {
         setLoading(true);
-        fetch(`http://10.128.116.241:3000/kanji/level/${level}?offset=${offset}&limit=100`)
+        fetch(`http://10.128.31.122:3000/kanji/level/${level}?offset=${offset}&limit=100`)
         .then((res) => res.json())
         .then((data) => {
             setKanjiList(data);
@@ -111,7 +111,13 @@ export default function ReadKanji () {
                     }
                     width={120}
                     backgroundColor="#84d9bd"
-                    fun={() => navigation.goBack()}
+                    fun={() => {
+                        if (currentIndex >0) {
+                            setCurrentIndex(currentIndex -1)
+                        }
+                    }
+                        
+                    }
                 />
                 <Button
                     label={
@@ -121,7 +127,14 @@ export default function ReadKanji () {
                     }
                     width={120}
                     backgroundColor="#84d9bd"
-                    fun={() => navigation.goBack()}
+                    fun={() => {
+                        if (currentIndex < kanjiList.length - 1) {
+                            setCurrentIndex(currentIndex + 1);
+                        } else {
+                            Alert.alert("End", "No more Kanji in this section");
+                        }
+
+                    }}
                 />
             </View>
 

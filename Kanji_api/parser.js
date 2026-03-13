@@ -12,7 +12,7 @@ db.serialize(() => {
         meaning TEXT,
         onyomi TEXT,
         kunyomi TEXT,
-        jlpt_level TEXT
+        jlpt_level INTEGER
     )`)
 });
 
@@ -32,11 +32,11 @@ fs.readFile(xmlFile, (error, data) => {
             return;
 
         }
-        // ✅ Safe path to character list
+        // Safe path to character list
         const characters = result.kanjidic2?.character || result.kanjidic?.character;
 
         if (!characters || characters.length === 0) {
-        console.error('No kanji characters found in XML. ❌ Check XML structure.');
+        console.error('No kanji characters found in XML. Check XML structure.');
         return;
         }
 
@@ -64,7 +64,7 @@ fs.readFile(xmlFile, (error, data) => {
             .map(r => r._)
             .join(', ');
 
-            const jlpt = entry.misc?.[0]?.jlpt?.[0] || null;
+            const jlpt = entry.misc?.[0]?.jlpt?.[0] ? parseInt(entry.misc[0].jlpt[0]) : null;
 
             insert.run(literal, meanings, onyomi, kunyomi, jlpt)
         });
